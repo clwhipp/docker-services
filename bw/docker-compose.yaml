@@ -1,0 +1,33 @@
+version: "3.8"
+
+services:
+
+  ts-bitwarden:
+    image: tailscale/tailscale:latest
+    hostname: vaultwarden
+    environment:
+      - TS_AUTHKEY=""
+      - TS_STATE_DIR=/var/lib/tailscale
+    volumes:
+      - ${DATA_DIR}/ts/bitwarden:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+      - sys_module
+    restart: unless-stopped
+
+  bitwarden:
+
+    build: ./bitwarden
+    container_name: vaultwarden
+    restart: unless-stopped
+    user: 1500:1500
+    network_mode: service:ts-bitwarden
+    depends_on:
+      - ts-bitwarden
+    env_file:
+      - ./bitwarden/bitwarden.env
+    volumes:
+      - ${DATA_DIR}/bitwarden/data:/data
+      - ${BITWARDEN_TLS_CERT_LOCATION}:/ssl/bitwarden-tls.crt:ro
+      - ${BITWARDEN_TLS_KEY_LOCATION}:/ssl/bitwarden-tls.key:ro

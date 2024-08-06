@@ -1,0 +1,50 @@
+version: "3.8"
+
+services:
+
+  ts-nextcloud:
+
+    image: tailscale/tailscale:latest
+    hostname: nextcloud
+    environment:
+      - TS_AUTHKEY=""
+      - TS_STATE_DIR=/var/lib/tailscale
+    volumes:
+      - ${DATA_DIR}/ts/files:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+      - sys_module
+    restart: unless-stopped
+
+  db:
+
+    build: ./db
+    container_name: mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW --innodb-file-per-table=1 --skip-innodb-read-only-compressed
+    restart: unless-stopped
+    user: 1503:1503
+    network_mode: service:ts-nextcloud
+    depends_on:
+      - ts-nextcloud
+    volumes:
+      - ${DATA_DIR}/mariadb:/var/lib/mysql
+    env_file:
+      - ./db/db.env
+
+  nextcloud:
+
+    build: ./nextcloud
+    container_name: nextcloud
+    restart: unless-stopped
+    # user: 1502:1502 - Controlled via apache configuration once ports are bound
+    network_mode: service:ts-nextcloud
+    depends_on:
+      - ts-nextcloud
+    volumes:
+      - ${DATA_DIR}/nextcloud/config:/var/www/html/config
+      - ${DATA_DIR}/nextcloud/data:/var/www/html/data
+      - ${DATA_DIR}/nextcloud/custom_apps:/var/www/html/custom_apps
+      - ${DATA_DIR}/nextcloud/themes:/var/www/html/themes
+      - ${NEXTCLOUD_TLS_CERT_LOCATION}:/etc/apache2/ssl/nextcloud-tls.crt:ro
+      - ${NEXTCLOUD_TLS_KEY_LOCATION}:/etc/apache2/ssl/nextcloud-tls.key:ro
