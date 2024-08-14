@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
     user: 1504:1504
     ports:
-      - ${NEBULA_IP}:8080:8080
+      - ${TAILSCALE_IP}:8080:8080
     env_file:
       - ./bitwarden/bitwarden.env
     volumes:
