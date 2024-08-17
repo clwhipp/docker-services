@@ -1,5 +1,8 @@
 FROM nextcloud:29.0.0-apache
 
+RUN apt update
+RUN apt -y install gettext-base
+
 # Install/Enable Apache Modules specific to SSL/TLS
 RUN a2enmod rewrite
 RUN a2enmod headers
