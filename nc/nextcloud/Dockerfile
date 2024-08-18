@@ -1,5 +1,7 @@
 FROM nextcloud:29.0.0-apache
 
+ARG NEXTCLOUD_DOMAIN
+
 RUN apt update
 RUN apt -y install gettext-base
 

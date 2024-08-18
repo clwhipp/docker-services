@@ -34,7 +34,10 @@ services:
 
   nextcloud:
 
-    build: ./nextcloud
+    build:
+      context: ./nextcloud
+      args:
+        NEXTCLOUD_DOMAIN: ${NEXTCLOUD_DOMAIN}
     container_name: nextcloud
     restart: unless-stopped
     # user: 1502:1502 - Controlled via apache configuration once ports are bound
