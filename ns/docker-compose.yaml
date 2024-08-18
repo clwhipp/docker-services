@@ -22,7 +22,7 @@ services:
     build: ./pihole
     container_name: ns
     restart: unless-stopped
-    network_mode: services:ts-dns
+    network_mode: service:ts-dns
     depends_on:
       - ts-dns
     env_file:
