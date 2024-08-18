@@ -21,7 +21,7 @@ services:
     build: ./bitwarden
     container_name: vaultwarden
     restart: unless-stopped
-    user: 1500:1500
+    user: 1504:1504
     network_mode: service:ts-bitwarden
     depends_on:
       - ts-bitwarden
