@@ -10,7 +10,7 @@ services:
     restart: unless-stopped
     user: 1503:1503
     ports:
-      - ${NEBULA_IP}:3306:3306
+      - "${TAILSCALE_IP}:3306:3306"
     volumes:
       - ${DATA_DIR}/mariadb:/var/lib/mysql
     env_file:
@@ -26,7 +26,7 @@ services:
     restart: unless-stopped
     # user: 1502:1502 - Controlled via apache configuration once ports are bound
     ports:
-      - ${NEBULA_IP}:443:443
+      - "${TAILSCALE_IP}:443:443"
     volumes:
       - ${DATA_DIR}/nextcloud/config:/var/www/html/config
       - ${DATA_DIR}/nextcloud/data:/var/www/html/data
@@ -34,3 +34,4 @@ services:
       - ${DATA_DIR}/nextcloud/themes:/var/www/html/themes
       - ${NEXTCLOUD_TLS_CERT_LOCATION}:/etc/apache2/ssl/nextcloud-tls.crt:ro
       - ${NEXTCLOUD_TLS_KEY_LOCATION}:/etc/apache2/ssl/nextcloud-tls.key:ro
+

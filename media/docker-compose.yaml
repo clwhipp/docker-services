@@ -2,30 +2,15 @@ version: "3.8"
 
 services:
 
-  ts-media:
-
-    image: tailscale/tailscale:latest
-    hostname: media
-    environment:
-      - TS_AUTHKEY=${TAILSCALE_AUTH_KEY}
-      - TS_STATE_DIR=/var/lib/tailscale
-    volumes:
-      - ${DATA_DIR}/ts/files:/var/lib/tailscale
-      - /dev/net/tun:/dev/net/tun
-    cap_add:
-      - net_admin
-      - sys_module
-    restart: unless-stopped
-
   jellyfin:
 
     build: ./jellyfin
     container_name: media
     restart: unless-stopped
     user: 1501:1501
-    network_mode: service:ts-media
-    depends_on:
-      - ts-media
+    ports:
+      - 80:8096
+      - 8096:8096
     volumes:
       - ${DATA_DIR}/jellyfin/config:/config
       - ${DATA_DIR}/jellyfin/cache:/cache
