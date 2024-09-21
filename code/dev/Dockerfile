@@ -5,7 +5,8 @@ EXPOSE 8080
 RUN apt update
 
 # Install base packages
-RUN apt -y install sudo curl git vim tmux less
+RUN apt -y install sudo curl
+RUN apt -y install git vim tmux
 
 # Install Python packages
 RUN apt -y install python3 python3-pip
@@ -29,6 +30,9 @@ RUN groupadd -g 1600 code
 RUN useradd -rm -d /home/code -s /bin/bash -G sudo -u 1600 -g 1600 code
 RUN echo "code:$CODE_PASSWORD" | chpasswd
 RUN echo 'code ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+COPY bashrc /home/code/.bashrc
+RUN chown code:code /home/code/.bashrc
+RUN chmod 700 /home/code/.bashrc
 
 RUN mkdir -p /home/code/.config/code-server
 COPY config.yaml /home/code/.config/code-server
