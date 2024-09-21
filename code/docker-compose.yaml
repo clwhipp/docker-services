@@ -11,6 +11,7 @@ services:
     ports:
       - ${TAILSCALE_IP}:9000:8080
     volumes:
-      - ${DATA_DIR}/workspace:/home/code/workspace
+      - ${DATA_DIR}/code/ssh:/home/code/.ssh
+      - ${DATA_DIR}/code/workspace:/home/code/workspace
       - ${CODE_TLS_CERT_LOCATION}:/tls/code-tls.crt:ro
       - ${CODE_TLS_KEY_LOCATION}:/tls/code-tls.key:ro
