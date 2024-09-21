@@ -1,0 +1,16 @@
+services:
+
+  code:
+    build:
+      context: ./dev
+      args:
+        CODE_PASSWORD: ${PASSWORD}
+    container_name: code
+    restart: unless-stopped
+    user: 1600:1600
+    ports:
+      - ${TAILSCALE_IP}:9000:8080
+    volumes:
+      - ${DATA_DIR}/workspace:/home/code/workspace
+      - ${CODE_TLS_CERT_LOCATION}:/tls/code-tls.crt:ro
+      - ${CODE_TLS_KEY_LOCATION}:/tls/code-tls.key:ro
