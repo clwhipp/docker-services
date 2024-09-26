@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
     user: 1600:1600
     ports:
-      - ${TAILSCALE_IP}:9000:8080
+      - ${NEBULA_IP}:9000:8080
     volumes:
       - ${DATA_DIR}/code/ssh:/home/code/.ssh
       - ${DATA_DIR}/code/workspace:/home/code/workspace
