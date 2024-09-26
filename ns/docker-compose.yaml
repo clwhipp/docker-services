@@ -10,7 +10,7 @@ services:
     ports:
       - "53:53/tcp"
       - "53:53/udp"
-      - "${TAILSCALE_IP}:8443:443/tcp"
+      - "${NEBULA_IP}:8443:443/tcp"
     env_file:
       - ./pihole/pihole.env
     volumes:
