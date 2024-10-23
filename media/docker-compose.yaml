@@ -12,5 +12,4 @@ services:
     volumes:
       - ${DATA_DIR}/jellyfin/config:/config
       - ${DATA_DIR}/jellyfin/cache:/cache
-      - /mnt/trancodes:/config/transcodes
       - ${DATA_DIR}/media:/media
